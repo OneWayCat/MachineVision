@@ -1,0 +1,6 @@
+message(STATUS "Building all core libraries for 1dm/2dm")
+add_subdirectory(utils)
+add_subdirectory(measuring1d)
+#add_subdirectory(measuring2d)
+#add_subdirectory(meniscus)
+#add_subdirectory(bead)
