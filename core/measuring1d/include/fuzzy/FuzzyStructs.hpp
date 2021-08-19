@@ -2,6 +2,8 @@
 #ifndef MEASURING_FUZZYSTRUCTS_HPP
 #define MEASURING_FUZZYSTRUCTS_HPP
 
+#include "MeasuringResults.hpp"
+
 /**
  * @enum FuzzyType
  * @brief The criteria to score all edges found in the MeasureHandle object.
@@ -49,7 +51,7 @@ enum class FuzzyType {
 /**
  * @brief A class representing a piecewise linear function for fuzzy scoring.
  */
-class FuzzyFunc {
+class FuzzyFunction {
 private:
     std::vector<double> xVals;
     std::vector<double> yVals;
@@ -63,7 +65,7 @@ public:
      * @param yVals A vector of the x coordinates to create the piecewise function with. \n
      * Restrictions: The elements of this vector must be between 0 and 1 (inclusive).
      */
-    FuzzyFunc(const std::vector<double> &xVals, const std::vector<double> &yVals);
+    FuzzyFunction(const std::vector<double> &xVals, const std::vector<double> &yVals);
 
     /**
      * @brief Get the x coordinates of the function.
@@ -92,4 +94,41 @@ public:
     void scale(double factor);
 };
 
+/**
+ * @brief A structure to represent the results of the fuzzyMeasurePos function.
+ */
+struct FuzzyMeasurePosResult : EdgePositionResults {
+    // Constructor
+    FuzzyMeasurePosResult(EdgeResults &pos, std::vector<double> &amplitudes_,
+                          std::vector<double> &scores_);
+
+    /** Fuzzy score of each edge. */
+    std::vector<double> fuzzyScores;
+};
+
+/**
+ * @brief A structure to represent the results of the fuzzyMeasurePairs function.
+ */
+struct FuzzyMeasurePairsResult : EdgePairsResults {
+    // Default constructor
+    FuzzyMeasurePairsResult() = default;
+
+    // Constructor
+    FuzzyMeasurePairsResult(std::vector<cv::Point2d> &posFirst, std::vector<double> &ampFirst,
+                            std::vector<cv::Point2d> &posSecond, std::vector<double> &ampSecond,
+                            std::vector<double> &intraDist, std::vector<double> &interDist,
+                            std::vector<cv::Point2d> &posCenter, std::vector<double> &scores);
+
+    /** Position of the center of each pair */
+    std::vector<cv::Point2d> posCenter;
+
+    /** Fuzzy score of each pair */
+    std::vector<double> fuzzyScores;
+};
+
+/**
+ * Since the results of the fuzzyMeasurePairings function and the fuzzyMeasurePairs are almost identical (minus interDistance),
+ * we use the same struct for both of them, but interDistance is empty for fuzzyMeasurePairings.
+ */
+typedef FuzzyMeasurePairsResult FuzzyMeasurePairingsResult;
 #endif

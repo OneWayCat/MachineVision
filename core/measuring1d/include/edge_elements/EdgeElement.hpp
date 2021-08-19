@@ -3,6 +3,11 @@
 #ifndef MEASURING_EDGEELEMENT_HPP
 #define MEASURING_EDGEELEMENT_HPP
 
+#include <unordered_map>
+
+#include "MeasuringResults.hpp"
+#include "FuzzyStructs.hpp"
+
 struct EnumClassHash {
     template<typename T>
     std::size_t operator()(T t) const {
@@ -19,7 +24,7 @@ protected:
     int row;  // Row coordinate of the center
     int column;  // Column coordinate of the center
 
-    std::unordered_map <FuzzyType, FuzzyFunc, EnumClassHash> fuzzySet;  // Fuzzy functions to use
+    std::unordered_map<FuzzyType, FuzzyFunction, EnumClassHash> fuzzySet;  // Fuzzy functions to use
     double pairSize;  // For normalized fuzzy function
 
     // Minimum and maximum coordinates for the bounding box of the handle
@@ -35,9 +40,7 @@ protected:
     std::vector<int> binCounts;  // 1D array to store number of pixels per each bin
 
     EdgeElement(int row, int column);  // Constructor
-
-    virtual ~EdgeElement() = 0;  // Destructor
-
+    
 protected:
 
     /**
@@ -70,14 +73,14 @@ public:
      * @brief Get the fuzzy functions that the object is using
      * @return fuzzySet
      */
-    const std::unordered_map <FuzzyType, FuzzyFunc, EnumClassHash> &getFuzzySet() const { return fuzzySet; }
+    const std::unordered_map<FuzzyType, FuzzyFunction, EnumClassHash> &getFuzzySet() const { return fuzzySet; }
 
     /**
      * @brief Set the fuzzy type and its fuzzy function in the measure handle to score edges or edge pairs with.
      * @param func Fuzzy function to use to score edges with.
      * @param type Fuzzy criteria to use.
      */
-    void setFuzzyFunc(const FuzzyFunc &func, FuzzyType type);
+    void setFuzzyFunc(const FuzzyFunction &func, FuzzyType type);
 
     /**
      * @brief Set the fuzzy type and its normalized fuzzy function in the measure handle.
@@ -88,7 +91,7 @@ public:
      * @param type Fuzzy criteria to use.
      * @param pairSize The normalizing factor for the fuzzy function.
      */
-    void setNormFuzzyFunc(const FuzzyFunc &func, FuzzyType type, double pairSize_);
+    void setNormFuzzyFunc(const FuzzyFunction &func, FuzzyType type, double pairSize_);
 
     /**
      * @brief Remove a fuzzy function for the speficied fuzzy type.

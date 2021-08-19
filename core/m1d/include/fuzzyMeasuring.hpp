@@ -8,43 +8,7 @@
 
 #include "measuring.hpp"
 
-/**
- * @brief A structure to represent the results of the fuzzyMeasurePos function.
- */
-struct FuzzyMeasurePosResult : MeasurePosResult {
-    // Constructor
-    FuzzyMeasurePosResult(PosDistanceResult &pos, std::vector<double> &amplitudes_,
-                          std::vector<double> &scores_);
 
-    /** Fuzzy score of each edge. */
-    std::vector<double> fuzzyScores;
-};
-
-/**
- * @brief A structure to represent the results of the fuzzyMeasurePairs function.
- */
-struct FuzzyMeasurePairsResult : MeasurePairsResult {
-    // Default constructor
-    FuzzyMeasurePairsResult() = default;
-
-    // Constructor
-    FuzzyMeasurePairsResult(std::vector<cv::Point2d> &posFirst, std::vector<double> &ampFirst,
-                            std::vector<cv::Point2d> &posSecond, std::vector<double> &ampSecond,
-                            std::vector<double> &intraDist, std::vector<double> &interDist,
-                            std::vector<cv::Point2d> &posCenter, std::vector<double> &scores);
-
-    /** Position of the center of each pair */
-    std::vector<cv::Point2d> posCenter;
-
-    /** Fuzzy score of each pair */
-    std::vector<double> fuzzyScores;
-};
-
-/**
- * Since the results of the fuzzyMeasurePairings function and the fuzzyMeasurePairs are almost identical (minus interDistance),
- * we use the same struct for both of them, but interDistance is empty for fuzzyMeasurePairings.
- */
-typedef FuzzyMeasurePairsResult FuzzyMeasurePairingsResult;
 
 /**
  * @fn FuzzyMeasurePosResult fuzzyMeasurePos(const cv::Mat &img, const T &measureHandle, double sigma, double ampThresh,
