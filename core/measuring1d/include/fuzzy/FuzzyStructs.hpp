@@ -97,7 +97,7 @@ public:
 /**
  * @brief A structure to represent the results of the fuzzyMeasurePos function.
  */
-struct FuzzyMeasurePosResult : EdgePositionResults {
+struct FuzzyMeasurePosResult : MeasurePosResults {
     // Constructor
     FuzzyMeasurePosResult(EdgeResults &pos, std::vector<double> &amplitudes_,
                           std::vector<double> &scores_);
@@ -109,7 +109,7 @@ struct FuzzyMeasurePosResult : EdgePositionResults {
 /**
  * @brief A structure to represent the results of the fuzzyMeasurePairs function.
  */
-struct FuzzyMeasurePairsResult : EdgePairsResults {
+struct FuzzyMeasurePairsResult : MeasurePairsResults {
     // Default constructor
     FuzzyMeasurePairsResult() = default;
 

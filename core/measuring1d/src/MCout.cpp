@@ -1,11 +1,12 @@
-#include "mcout.hpp"
+#include "MCout.hpp"
 #include "arrutils.hpp"
 
 #include <iterator>
+#include <iostream>
 
 // Printing MeasurePosResult
-std::ostream& operator<<(std::ostream& o, const MeasurePosResult& p) {
-    std::vector<cv::Point2d> pos = p.pos;
+std::ostream &operator<<(std::ostream &o, const MeasurePosResults &p) {
+    std::vector<cv::Point2d> pos = p.edgePositions;
     std::vector<double> amps = p.amplitudes;
     std::vector<double> dists = p.distances;
 
@@ -34,7 +35,7 @@ std::ostream& operator<<(std::ostream& o, const MeasurePosResult& p) {
 }
 
 // Printing MeasurePairsResult
-std::ostream& operator<<(std::ostream& o, const MeasurePairsResult& p) {
+std::ostream &operator<<(std::ostream &o, const MeasurePairsResults &p) {
     std::vector<cv::Point2d> posFirst = p.posFirst;
     std::vector<double> ampsFirst = p.amplitudesFirst;
 
@@ -86,8 +87,8 @@ std::ostream& operator<<(std::ostream& o, const MeasurePairsResult& p) {
 }
 
 // Printing FuzzyMeasurePosResult
-std::ostream& operator<<(std::ostream& o, const FuzzyMeasurePosResult& p) {
-    std::vector<cv::Point2d> pos = p.pos;
+std::ostream &operator<<(std::ostream &o, const FuzzyMeasurePosResult &p) {
+    std::vector<cv::Point2d> pos = p.edgePositions;
     std::vector<double> amps = p.amplitudes;
     std::vector<double> dists = p.distances;
     std::vector<double> scores = p.fuzzyScores;
@@ -119,7 +120,7 @@ std::ostream& operator<<(std::ostream& o, const FuzzyMeasurePosResult& p) {
 }
 
 // Printing FuzzyMeasurePairsResult
-std::ostream& operator<<(std::ostream& o, const FuzzyMeasurePairsResult& p) {
+std::ostream &operator<<(std::ostream &o, const FuzzyMeasurePairsResult &p) {
     std::vector<cv::Point2d> posFirst = p.posFirst;
     std::vector<double> ampsFirst = p.amplitudesFirst;
 

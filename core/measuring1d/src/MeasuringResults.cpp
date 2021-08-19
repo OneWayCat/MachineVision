@@ -14,15 +14,15 @@ EdgeResults::EdgeResults(EdgeResults &&obj) noexcept:
         distances{std::move(obj.distances)} {
 }
 
-EdgePositionResults::EdgePositionResults(EdgeResults &pos, std::vector<double> &amplitudes_) :
+MeasurePosResults::MeasurePosResults(EdgeResults &pos, std::vector<double> &amplitudes_) :
 
         EdgeResults{std::move(pos)},
         amplitudes{std::move(amplitudes_)} {
 }
 
-EdgePairsResults::EdgePairsResults(std::vector<cv::Point2d> &posFirst_, std::vector<double> &amplitudesFirst_,
-                                   std::vector<cv::Point2d> &posSecond_, std::vector<double> &amplitudesSecond_,
-                                   std::vector<double> &intraDistance_, std::vector<double> &interDistance_) :
+MeasurePairsResults::MeasurePairsResults(std::vector<cv::Point2d> &posFirst_, std::vector<double> &amplitudesFirst_,
+                                         std::vector<cv::Point2d> &posSecond_, std::vector<double> &amplitudesSecond_,
+                                         std::vector<double> &intraDistance_, std::vector<double> &interDistance_) :
 
         posFirst{std::move(posFirst_)},
         amplitudesFirst{std::move(amplitudesFirst_)},
@@ -34,7 +34,7 @@ EdgePairsResults::EdgePairsResults(std::vector<cv::Point2d> &posFirst_, std::vec
         interDistance{std::move(interDistance_)} {
 }
 
-EdgePairsResults EdgePairsResults::front() const {
+MeasurePairsResults MeasurePairsResults::front() const {
     auto pf = getFirst(posFirst);
     auto af = getFirst(amplitudesFirst);
 
@@ -44,10 +44,10 @@ EdgePairsResults EdgePairsResults::front() const {
     auto intra = getFirst(intraDistance);
     auto inter = getFirst(interDistance);
 
-    return EdgePairsResults{pf, af, ps, as, intra, inter};
+    return MeasurePairsResults{pf, af, ps, as, intra, inter};
 }
 
-EdgePairsResults EdgePairsResults::back() const {
+MeasurePairsResults MeasurePairsResults::back() const {
     auto pf = getLast(posFirst);
     auto af = getLast(amplitudesFirst);
 
@@ -57,13 +57,13 @@ EdgePairsResults EdgePairsResults::back() const {
     auto intra = getLast(intraDistance);
     auto inter = getLast(interDistance);
 
-    return EdgePairsResults{pf, af, ps, as, intra, inter};
+    return MeasurePairsResults{pf, af, ps, as, intra, inter};
 }
 
 FuzzyMeasurePosResult::FuzzyMeasurePosResult(EdgeResults &pos, std::vector<double> &amplitudes_,
                                              std::vector<double> &scores_) :
 
-        EdgePositionResults(pos, amplitudes_),
+        MeasurePosResults(pos, amplitudes_),
         fuzzyScores{std::move(scores_)} {
 }
 
@@ -72,7 +72,7 @@ FuzzyMeasurePairsResult::FuzzyMeasurePairsResult(std::vector<cv::Point2d> &posFi
                                                  std::vector<double> &intraDist, std::vector<double> &interDist,
                                                  std::vector<cv::Point2d> &posCenter, std::vector<double> &scores) :
 
-        EdgePairsResults{posFirst, ampFirst, posSecond, ampSecond, intraDist, interDist},
+        MeasurePairsResults{posFirst, ampFirst, posSecond, ampSecond, intraDist, interDist},
         posCenter{std::move(posCenter)},
         fuzzyScores{std::move(scores)} {
 }

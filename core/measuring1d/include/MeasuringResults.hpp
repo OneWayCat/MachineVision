@@ -54,9 +54,9 @@ struct EdgeResults {
 /**
  * @brief A structure to represent the results of the measurePos function.
  */
-struct EdgePositionResults : EdgeResults {
+struct MeasurePosResults : EdgeResults {
     // Constructor
-    EdgePositionResults(EdgeResults &pos, std::vector<double> &amplitudes_);
+    MeasurePosResults(EdgeResults &pos, std::vector<double> &amplitudes_);
 
     /** Signed amplitude of each edge. */
     std::vector<double> amplitudes;
@@ -65,14 +65,14 @@ struct EdgePositionResults : EdgeResults {
 /**
  * @brief A structure to represent the results of the measurePairs function.
  */
-struct EdgePairsResults {
+struct MeasurePairsResults {
     // Default constructor
-    EdgePairsResults() = default;
+    MeasurePairsResults() = default;
 
     // Constructor
-    EdgePairsResults(std::vector<cv::Point2d> &posFirst_, std::vector<double> &amplitudesFirst_,
-                     std::vector<cv::Point2d> &posSecond_, std::vector<double> &amplitudesSecond_,
-                     std::vector<double> &intraDistance_, std::vector<double> &interDistance_);
+    MeasurePairsResults(std::vector<cv::Point2d> &posFirst_, std::vector<double> &amplitudesFirst_,
+                        std::vector<cv::Point2d> &posSecond_, std::vector<double> &amplitudesSecond_,
+                        std::vector<double> &intraDistance_, std::vector<double> &interDistance_);
 
     /** Position (row, column) of the first edge of each pair. */
     std::vector<cv::Point2d> posFirst;
@@ -89,11 +89,11 @@ struct EdgePairsResults {
     /** Distance between consecutive edge pairs. */
     std::vector<double> interDistance;
 
-    // Return a EdgePairsResults struct with just the first element of each data field
-    EdgePairsResults front() const;
+    // Return a MeasurePairsResults struct with just the first element of each data field
+    MeasurePairsResults front() const;
 
-    // Return a EdgePairsResults struct with just the last element of each data field
-    EdgePairsResults back() const;
+    // Return a MeasurePairsResults struct with just the last element of each data field
+    MeasurePairsResults back() const;
 };
 
 #endif

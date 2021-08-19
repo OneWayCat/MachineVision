@@ -43,8 +43,8 @@ bool betweenInclusive(double a, double b, double c);
  *  between each consecutive edge.
  */
 template<typename T>
-EdgePositionResults measurePos(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
-                               TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL) {
+MeasurePosResults measurePos(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
+                             TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL) {
     validateArgs(img, sigma, threshold);
     cv::Mat profile = measureProjection(img, measureHandle);
 
@@ -94,15 +94,15 @@ EdgePositionResults measurePos(const cv::Mat &img, const T &measureHandle, doubl
  *  between the edges of each pair and the distance between consecutive edge pairs.
  */
 template<typename T>
-EdgePairsResults
+MeasurePairsResults
 measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
              TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL, bool pickStrongest = false) {
     // Detect all edges
-    EdgePositionResults edges = measurePos(img, measureHandle, sigma, threshold);
+    MeasurePosResults edges = measurePos(img, measureHandle, sigma, threshold);
 
     // Make sure there are at least 2 edges (for at least one edge pair)
     if (edges.amplitudes.size() < 2)
-        return EdgePairsResults{};
+        return MeasurePairsResults{};
 
     // If transition is ALL, the first edge determines the polarity of edge pairs to detect
     if (transition == TransitionType::ALL)
@@ -159,8 +159,8 @@ measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double th
     for (size_t i = 0; i < interDistance.size(); i++)
         interDistance[i] = std::accumulate(distancePtr + secondIndex[i], distancePtr + firstIndex[i + 1], 0.0);
 
-    auto result = EdgePairsResults{posFirst, amplitudesFirst, posSecond,
-                                   amplitudesSecond, intraDistance, interDistance};
+    auto result = MeasurePairsResults{posFirst, amplitudesFirst, posSecond,
+                                      amplitudesSecond, intraDistance, interDistance};
 
     // Return values
     switch (select) {
