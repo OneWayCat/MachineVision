@@ -3,6 +3,57 @@
 #include "EdgeElement.hpp"
 
 using namespace std;
+using namespace cv;
+
+Mat EdgeElement::measureProjection(const Mat &img) const {
+    // Ensure image is single channel
+    CV_Assert(img.depth() == CV_8U && img.channels() == 1);
+
+    // Dimensions of the image
+    int imgHeight = img.rows;
+    int imgWidth = img.cols;
+
+    // Coordinates of the bounding box of the measure handle
+    int boxMinC = minC + column;
+    int boxMinR = minR + row;
+
+    size_t numCols = size_t(maxC) - minC + 1;
+    size_t numRows = size_t(maxR) - minR + 1;
+
+    // Project down to 1D profile
+    Mat_<double> profile = Mat_<double>::zeros(1, (int) binCounts.size());
+    auto profPtr = profile.ptr<double>();  // Pointer to the profile array
+
+    // Main loop to iterate over each (r, c) pair inside the bounding box
+    for (size_t r = 0; r < numRows; r++) {
+        int imgRow = (int) r + boxMinR;
+
+        // Treat as 0 if out of bounds
+        if (imgRow < 0 || imgRow >= imgHeight)
+            continue;
+
+        const auto rowPtr = img.ptr<uchar>(imgRow);  // Pointer to the row of the image
+
+        for (int c = 0; c < numCols; c++) {
+            int binNumber = binNumbers[r * numCols + c];
+            int imgCol = c + boxMinC;
+
+            // Inside check
+            if (binNumber != -1 && imgCol >= 0 && imgCol < imgWidth) {
+                // Add the pixel of the image to the correct bin
+                profPtr[binNumber] += rowPtr[imgCol];
+            }
+        }
+    }
+
+    // Divide the profile by binCounts to get the mean
+    for (int i = 0; i < binCounts.size(); i++) {
+        if (binCounts[i] != 0)
+            profPtr[i] = (double) profPtr[i] / binCounts[i];
+    }
+
+    return profile;
+}
 
 // Initialization constructor
 EdgeElement::EdgeElement(int row_, int column_) :

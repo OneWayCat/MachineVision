@@ -40,7 +40,7 @@ protected:
     std::vector<int> binCounts;  // 1D array to store number of pixels per each bin
 
     EdgeElement(int row, int column);  // Constructor
-    
+
 protected:
 
     /**
@@ -57,6 +57,18 @@ protected:
     virtual double findDistance(double firstCoord, double secondCoord) = 0;
 
 public:
+    /**
+     * @fn cv::Mat measureProjection(const cv::Mat &img, const MeasureHandle &measureHandle)
+     * @brief Extract a one-dimensional gray value profile perpendicular to a rectangle or annular arc.
+       @details This is done by taking the mean of the 2D image across the axis perpendicular to the major axis of
+        the rectangle or the annular arc.
+
+     * @param img Single-channel input image
+     * @param measureHandle The MeasureHandle object. This determines the region of interest.
+     * @return The one-dimensional gray-value profile.
+     */
+    cv::Mat measureProjection(const cv::Mat &img) const;
+
     /**
      * @brief Get the row coordinate of the center of the handle.
      * @return row
@@ -111,8 +123,6 @@ public:
      * @param newCol
      */
     void translateMeasure(int newRow, int newCol);
-
-    cv::Mat measureProjection(const cv::Mat &img) const;
 
     size_t numberOfBins() const { return binCounts.size(); }
 
