@@ -1,5 +1,7 @@
 #include "Measuring.hpp"
 
+using namespace cv;
+
 std::pair <std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &profile, const std::vector<int> &aboveThreshold) {
     std::vector<double> subpixelPos{};
     std::vector<double> amplitudes{};
@@ -31,7 +33,7 @@ std::pair <std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &
     return std::make_pair(subpixelPos, amplitudes);
 }
 
-std::pair <std::vector<double>, std::vector<double>> getEdgeAmplitudes(Mat &profile, const MeasureHandle &measureHandle, double sigma, double threshold, TransitionType transition) {
+std::pair <std::vector<double>, std::vector<double>> getEdgeAmplitudes(Mat &profile, const EdgeElement &measureHandle, double sigma, double threshold, TransitionType transition) {
 
     //    std::ofstream profileOutIO("D:/Programming/Workspaces/Zebra/H-Rev-C/noise_testing/projection.txt", std::ios::app);
     //    for (int i = 0; i < profile.cols; i++) {
@@ -70,12 +72,12 @@ std::pair <std::vector<double>, std::vector<double>> getEdgeAmplitudes(Mat &prof
         }
     }
 
-    std::ofstream profileOutIO("D:/Programming/Workspaces/Zebra/H-Rev-C/noise_testing/projection.txt", std::ios::app);
-    for (int i = 0; i < profile.cols; i++) {
-        profileOutIO << profile.at<double>(0, i) << ",";
-    }
-    profileOutIO << "\n";
-    profileOutIO.close();
+//    std::ofstream profileOutIO("D:/Programming/Workspaces/Zebra/H-Rev-C/noise_testing/projection.txt", std::ios::app);
+//    for (int i = 0; i < profile.cols; i++) {
+//        profileOutIO << profile.at<double>(0, i) << ",";
+//    }
+//    profileOutIO << "\n";
+//    profileOutIO.close();
 
     // Non maximum suppression to thin the edges
     Mat suppressed = nonMaxSuppress(profile);

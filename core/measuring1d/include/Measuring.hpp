@@ -2,13 +2,20 @@
 #ifndef MEASURING_MEASURING_HPP
 #define MEASURING_MEASURING_HPP
 
-#include "MeasuringResults.hpp"
+#include <vector>
+#include <utility>
+#include <numeric>
+
+#include "EdgeElement.hpp"
+#include "MUtils.hpp"
+#include "arrutils.hpp"
+#include "opencv2/imgproc.hpp"
 
 /* Find the subpixel position and the amplitude of the edges at that position given all the
  * edge amplitudes and the position of the local maxima/minima  */
-std::pair<std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &profile, const std::vector<int> &aboveThreshold);
+std::pair<std::vector<double>, std::vector<double>> findSubpixelPos(const cv::Mat &profile, const std::vector<int> &aboveThreshold);
 
-std::pair<std::vector<double>, std::vector<double>> getEdgeAmplitudes(Mat &profile, const MeasureHandle &measureHandle, double sigma, double threshold, TransitionType transition)
+std::pair<std::vector<double>, std::vector<double>> getEdgeAmplitudes(cv::Mat &profile, const EdgeElement &measureHandle, double sigma, double threshold, TransitionType transition);
 
 bool betweenInclusive(double a, double b, double c);
 
@@ -36,10 +43,10 @@ bool betweenInclusive(double a, double b, double c);
  *  between each consecutive edge.
  */
 template<typename T>
-MeasurePosResult measurePos(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
-                            TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL) {
+EdgePositionResults measurePos(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
+                               TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL) {
     validateArgs(img, sigma, threshold);
-    Mat profile = measureProjection(img, measureHandle);
+    cv::Mat profile = measureProjection(img, measureHandle);
 
     auto returnVal = getEdgeAmplitudes(profile, measureHandle, sigma, threshold, transition);
     std::vector<double> &aboveThreshold = returnVal.first;
@@ -53,8 +60,8 @@ MeasurePosResult measurePos(const cv::Mat &img, const T &measureHandle, double s
             amplitudes = getLast(amplitudes);
     }
 
-    PosDistanceResult pos = findEdgePos(measureHandle, aboveThreshold, select);
-    return MeasurePosResult(pos, amplitudes);
+    EdgeResults pos = findEdgePos(measureHandle, aboveThreshold, select);
+    return {pos, amplitudes};
 }
 
 /**
@@ -87,15 +94,15 @@ MeasurePosResult measurePos(const cv::Mat &img, const T &measureHandle, double s
  *  between the edges of each pair and the distance between consecutive edge pairs.
  */
 template<typename T>
-MeasurePairsResult
+EdgePairsResults
 measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
              TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL, bool pickStrongest = false) {
     // Detect all edges
-    MeasurePosResult edges = measurePos(img, measureHandle, sigma, threshold);
+    EdgePositionResults edges = measurePos(img, measureHandle, sigma, threshold);
 
     // Make sure there are at least 2 edges (for at least one edge pair)
     if (edges.amplitudes.size() < 2)
-        return MeasurePairsResult{};
+        return EdgePairsResults{};
 
     // If transition is ALL, the first edge determines the polarity of edge pairs to detect
     if (transition == TransitionType::ALL)
@@ -134,10 +141,10 @@ measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double th
     // Initialize vectors to return
     size_t n = firstIndex.size();
 
-    auto posFirst = indexArray(edges.pos, firstIndex);
+    auto posFirst = indexArray(edges.edgePositions, firstIndex);
     auto amplitudesFirst = indexArray(edges.amplitudes, firstIndex);
 
-    auto posSecond = indexArray(edges.pos, secondIndex);
+    auto posSecond = indexArray(edges.edgePositions, secondIndex);
     auto amplitudesSecond = indexArray(edges.amplitudes, secondIndex);
 
     // Find intraDistance and interDistance
@@ -152,8 +159,8 @@ measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double th
     for (size_t i = 0; i < interDistance.size(); i++)
         interDistance[i] = std::accumulate(distancePtr + secondIndex[i], distancePtr + firstIndex[i + 1], 0.0);
 
-    auto result = MeasurePairsResult{posFirst, amplitudesFirst, posSecond,
-                                     amplitudesSecond, intraDistance, interDistance};
+    auto result = EdgePairsResults{posFirst, amplitudesFirst, posSecond,
+                                   amplitudesSecond, intraDistance, interDistance};
 
     // Return values
     switch (select) {
@@ -183,15 +190,15 @@ measurePairs(const cv::Mat &img, const T &measureHandle, double sigma, double th
  *  between each consecutive points.
  */
 template<typename T>
-PosDistanceResult measureThresh(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
-                                SelectType select = SelectType::ALL) {
+EdgeResults measureThresh(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
+                          SelectType select = SelectType::ALL) {
     validateArgs(img, sigma, threshold);
 
     // Get the 1D profile
-    Mat profile = measureProjection(img, measureHandle);
+    cv::Mat profile = measureProjection(img, measureHandle);
 
     // Gaussian smoothing before detecting edges
-    GaussianBlur(profile, profile, Size(3, 1), sigma, 0, BORDER_REPLICATE);
+    cv::GaussianBlur(profile, profile, cv::Size(3, 1), sigma, 0, cv::BORDER_REPLICATE);
 
     // Find the points where profile crosses the threshold
     std::vector<double> matchThreshold{};
