@@ -5,6 +5,7 @@
 #include "FuzzyStructs.hpp"
 #include "MUtils.hpp"
 #include "EdgeElement.hpp"
+#include <cmath>
 
 /**
  * @brief Scores all edges based on the fuzzy functions of the measure handle.
@@ -27,7 +28,7 @@ double getScoreSinglePair(const cv::Mat &profile, const EdgeElement &measureHand
 
 /**
  * @brief Scores all edge pairs based on the fuzzy functions of the measure handle.
- * @param profile The 1D profile returned by measureProjection.
+ * @param profile The 1D profile returned by projectOnToProfileLine.
  * @param measureHandle The MeasureHandle object.
  * @param firstAmps
  * @param firstCoords
@@ -87,7 +88,7 @@ fuzzyMeasurePos(const cv::Mat &img, const T &measureHandle, double sigma, double
     cv::Mat profile = measureProjection(img, measureHandle);
 
     // Get edge coordinates and amplitudes
-    auto returnVal = getEdgeAmplitudes(profile, measureHandle, sigma, ampThresh, transition);
+    auto returnVal = getEdgeAmplitudes(profile, sigma, ampThresh, transition);
     std::vector<double> &coords = returnVal.first;
     std::vector<double> &amplitudes = returnVal.second;
 
@@ -148,7 +149,7 @@ fuzzyMeasurePairs(const cv::Mat &img, const T &measureHandle, double sigma, doub
     cv::Mat profileCopy = profile.clone();
 
     // Get edge coordinates and amplitudes
-    auto returnVal = getEdgeAmplitudes(profileCopy, measureHandle, sigma, ampThresh, TransitionType::ALL);
+    auto returnVal = getEdgeAmplitudes(profileCopy, sigma, ampThresh, TransitionType::ALL);
     std::vector<double> &coords = returnVal.first;
     std::vector<double> &amplitudes = returnVal.second;
 
@@ -175,7 +176,7 @@ fuzzyMeasurePairs(const cv::Mat &img, const T &measureHandle, double sigma, doub
 
     // Get the amplitudes and coordinates of the first and second edge of each pair
     for (int i = 0; i < amplitudes.size(); i++) {
-        if (signbit(amplitudes[i]) == sign) {
+        if (std::signbit(amplitudes[i]) == sign) {
             firstIndex.push_back(i);
             firstAmps.push_back(amplitudes[i]);
             firstCoords.push_back(coords[i]);
@@ -297,7 +298,7 @@ fuzzyMeasurePairings(const cv::Mat &img, const T &measureHandle, double sigma, d
     cv::Mat profileCopy = profile.clone();
 
     // Get edge coordinates and amplitudes
-    auto returnVal = getEdgeAmplitudes(profileCopy, measureHandle, sigma, ampThresh, TransitionType::ALL);
+    auto returnVal = getEdgeAmplitudes(profileCopy, sigma, ampThresh, TransitionType::ALL);
     std::vector<double> &coords = returnVal.first;
     std::vector<double> &amplitudes = returnVal.second;
 
@@ -324,7 +325,7 @@ fuzzyMeasurePairings(const cv::Mat &img, const T &measureHandle, double sigma, d
 
     // Get the amplitudes and coordinates of the first and second edge of each pair
     for (int i = 0; i < amplitudes.size(); i++) {
-        if (signbit(amplitudes[i]) == sign) {
+        if (std::signbit(amplitudes[i]) == sign) {
             firstIndex.push_back(i);
             firstAmps.push_back(amplitudes[i]);
             firstCoords.push_back(coords[i]);

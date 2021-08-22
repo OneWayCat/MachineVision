@@ -29,7 +29,7 @@ set(CMAKE_SHARED_LIBRARY_PREFIX "")
 message(STATUS "Building and finding all third party libraries")
 set(BOOST_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/boost_1_73_0)
 find_package(Boost 1.60.0 REQUIRED)
-find_package(OpenCV REQUIRED PATHS "D:/Programming/External Libs/OpenCV/install" NO_DEFAULT_PATH)
+find_package(OpenCV REQUIRED)
 #add_subdirectory(${CMAKE_SOURCE_DIR}/3rdparty/glm_0_9_9_8) # This line doesn't actually affect tinynurbs finding GLM for itself. In practice you can completely remove this line. There are no other dependencies for GLM in this project.
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/tinynurbs)
 

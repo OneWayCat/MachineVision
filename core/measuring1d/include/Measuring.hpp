@@ -15,7 +15,7 @@
  * edge amplitudes and the position of the local maxima/minima  */
 std::pair<std::vector<double>, std::vector<double>> findSubpixelPos(const cv::Mat &profile, const std::vector<int> &aboveThreshold);
 
-std::pair<std::vector<double>, std::vector<double>> getEdgeAmplitudes(cv::Mat &profile, const EdgeElement &measureHandle, double sigma, double threshold, TransitionType transition);
+std::pair<std::vector<double>, std::vector<double>> getEdgeAmplitudes(cv::Mat &profile, double sigma, double threshold, TransitionType transition);
 
 bool betweenInclusive(double a, double b, double c);
 
@@ -46,9 +46,9 @@ template<typename T>
 MeasurePosResults measurePos(const cv::Mat &img, const T &measureHandle, double sigma, double threshold,
                              TransitionType transition = TransitionType::ALL, SelectType select = SelectType::ALL) {
     validateArgs(img, sigma, threshold);
-    cv::Mat profile = measureProjection(img, measureHandle);
+    cv::Mat profile = measureHandle.projectOnToProfileLine(img);
 
-    auto returnVal = getEdgeAmplitudes(profile, measureHandle, sigma, threshold, transition);
+    auto returnVal = getEdgeAmplitudes(profile, sigma, threshold, transition);
     std::vector<double> &aboveThreshold = returnVal.first;
     std::vector<double> &amplitudes = returnVal.second;
 
@@ -60,7 +60,7 @@ MeasurePosResults measurePos(const cv::Mat &img, const T &measureHandle, double 
             amplitudes = getLast(amplitudes);
     }
 
-    EdgeResults pos = findEdgePos(measureHandle, aboveThreshold, select);
+    EdgeResults pos = measureHandle.findEdgePos(aboveThreshold, select);
     return {pos, amplitudes};
 }
 

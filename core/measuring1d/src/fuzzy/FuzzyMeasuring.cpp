@@ -173,7 +173,7 @@ double getScoreSinglePair(const cv::Mat &profile, const EdgeElement &measureHand
                 xValFirst = totalGrayValue / count;
         }
 
-        if (isnan(xValSecond))
+        if (std::isnan(xValSecond))
             score *= it.second.interpolate(xValFirst);
 
         else {

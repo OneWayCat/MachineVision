@@ -1,6 +1,8 @@
 #include "MUtils.hpp"
+#include <cmath>
 
 using namespace cv;
+using namespace std;
 
 // Helper functions for measuring and fuzzy measuring
 Mat nonMaxSuppress(Mat &profile) {

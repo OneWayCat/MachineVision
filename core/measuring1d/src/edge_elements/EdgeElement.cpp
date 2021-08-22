@@ -5,7 +5,7 @@
 using namespace std;
 using namespace cv;
 
-Mat EdgeElement::measureProjection(const Mat &img) const {
+Mat EdgeElement::projectOnToProfileLine(const Mat &img) const {
     // Ensure image is single channel
     CV_Assert(img.depth() == CV_8U && img.channels() == 1);
 

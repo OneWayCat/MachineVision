@@ -58,7 +58,7 @@ protected:
 
 public:
     /**
-     * @fn cv::Mat measureProjection(const cv::Mat &img, const MeasureHandle &measureHandle)
+     * @fn cv::Mat projectOnToProfileLine(const cv::Mat &img, const MeasureHandle &measureHandle)
      * @brief Extract a one-dimensional gray value profile perpendicular to a rectangle or annular arc.
        @details This is done by taking the mean of the 2D image across the axis perpendicular to the major axis of
         the rectangle or the annular arc.
@@ -67,7 +67,7 @@ public:
      * @param measureHandle The MeasureHandle object. This determines the region of interest.
      * @return The one-dimensional gray-value profile.
      */
-    cv::Mat measureProjection(const cv::Mat &img) const;
+    cv::Mat projectOnToProfileLine(const cv::Mat &img) const;
 
     /**
      * @brief Get the row coordinate of the center of the handle.

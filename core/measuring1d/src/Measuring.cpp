@@ -1,8 +1,10 @@
 #include "Measuring.hpp"
+#include <cmath>
 
 using namespace cv;
+using namespace std;
 
-std::pair <std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &profile, const std::vector<int> &aboveThreshold) {
+std::pair<std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &profile, const std::vector<int> &aboveThreshold) {
     std::vector<double> subpixelPos{};
     std::vector<double> amplitudes{};
 
@@ -33,7 +35,7 @@ std::pair <std::vector<double>, std::vector<double>> findSubpixelPos(const Mat &
     return std::make_pair(subpixelPos, amplitudes);
 }
 
-std::pair <std::vector<double>, std::vector<double>> getEdgeAmplitudes(Mat &profile, const EdgeElement &measureHandle, double sigma, double threshold, TransitionType transition) {
+std::pair<std::vector<double>, std::vector<double>> getEdgeAmplitudes(cv::Mat &profile, double sigma, double threshold, TransitionType transition) {
 
     //    std::ofstream profileOutIO("D:/Programming/Workspaces/Zebra/H-Rev-C/noise_testing/projection.txt", std::ios::app);
     //    for (int i = 0; i < profile.cols; i++) {
