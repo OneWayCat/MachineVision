@@ -43,20 +43,22 @@ protected:
 
 protected:
 
-    /**
-     * @brief Find the row and column coordinates of the points specified by the coords vector inside the
-     * edge element and the distances between each pair of consecutive points found.
-     *
-     * @param coords A vector that specifies where the points are inside measureHandle.
-     * @param select Whether to return all points or just the first or last point.
-     * @return A structure representing the edgePositions of the points and the distance between each pair of consecutive points.
-     */
-    virtual EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) = 0;
 
     // Find the distance between 2 edges in an edge element.
     virtual double findDistance(double firstCoord, double secondCoord) = 0;
 
 public:
+
+    /**
+ * @brief Find the row and column coordinates of the points specified by the coords vector inside the
+ * edge element and the distances between each pair of consecutive points found.
+ *
+ * @param coords A vector that specifies where the points are inside measureHandle.
+ * @param select Whether to return all points or just the first or last point.
+ * @return A structure representing the edgePositions of the points and the distance between each pair of consecutive points.
+ */
+    virtual EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) = 0;
+
     /**
      * @fn cv::Mat projectOnToProfileLine(const cv::Mat &img, const MeasureHandle &measureHandle)
      * @brief Extract a one-dimensional gray value profile perpendicular to a rectangle or annular arc.

@@ -6,9 +6,11 @@
 
 class ArcTransposedElement : public virtual ArcElement {
 protected:
-    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
 
 public:
+    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
+
+
     /**
      * @brief Construct a ArcElement object.
      *

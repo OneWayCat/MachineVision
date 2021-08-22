@@ -14,11 +14,13 @@ protected:
 
     double phi;  // Angle of the orientation of the rectangle
 
-    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
+
 
     double findDistance(double firstCoord, double secondCoord) override;
 
 public:
+    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
+
     /**
      * @brief Construct a RectangleElement object.
      *
@@ -54,8 +56,8 @@ public:
      * @param measureRectangle
      * @return 4 points of the rectangle.
      */
-    [[nodiscard]] std::vector <cv::Point2d> getCornerPoints() const {
-        std::vector <cv::Point2d> rectPoints(4);
+    [[nodiscard]] std::vector<cv::Point2d> getCornerPoints() const {
+        std::vector<cv::Point2d> rectPoints(4);
 
         int hh = halfHeight;
         int hw = halfWidth;

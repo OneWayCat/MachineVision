@@ -29,11 +29,13 @@ protected:
     double angleStart;  // Starting angle of the arc
     double angleExtent;  // Angular extent of the arc
 
-    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
 
     double findDistance(double firstCoord, double secondCoord) override;
 
 public:
+    EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) override;
+
+
     /**
      * @brief Construct a ArcElement object.
      *
