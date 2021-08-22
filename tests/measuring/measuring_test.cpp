@@ -9,15 +9,11 @@ using namespace cv;
 using namespace std;
 
 int main(int argc, char *argv[]) {
-
-    std::cout << std::filesystem::current_path() << "\n";
-
     // Read the image
     Mat image;
     Mat gray;
 
-    //image = imread(argv[1]);
-    image = imread("D:/Programming/Workspaces/Zebra/H-Rev-C/images/fuzzy_arc_test.png");
+    image = imread(argv[1]);
     cvtColor(image, gray, COLOR_BGR2GRAY);
 
     Mat profile;

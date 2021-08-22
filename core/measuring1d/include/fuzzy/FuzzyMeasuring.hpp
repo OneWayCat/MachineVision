@@ -5,6 +5,7 @@
 #include "FuzzyStructs.hpp"
 #include "MUtils.hpp"
 #include "EdgeElement.hpp"
+#include "Measuring.hpp"
 #include <cmath>
 
 /**

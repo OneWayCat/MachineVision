@@ -28,7 +28,7 @@ double ArcElement::findDistance(double firstCoord, double secondCoord) {
     return abs((secondCoord - firstCoord) * angleStep * middleRadius);
 }
 
-EdgeResults ArcElement::findEdgePos(const std::vector<double> &coords, SelectType select) {
+EdgeResults ArcElement::findEdgePos(const std::vector<double> &coords, SelectType select) const {
     // No edges detected
     if (coords.empty())
         return EdgeResults{};

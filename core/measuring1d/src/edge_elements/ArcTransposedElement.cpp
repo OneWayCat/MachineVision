@@ -3,7 +3,7 @@
 using namespace cv;
 
 
-EdgeResults ArcTransposedElement::findEdgePos(const std::vector<double> &coords, SelectType select) {
+EdgeResults ArcTransposedElement::findEdgePos(const std::vector<double> &coords, SelectType select) const {
     // No edges detected
     if (coords.empty())
         return EdgeResults{};

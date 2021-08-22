@@ -25,6 +25,7 @@ ENDMACRO()
 
 project(Measuring)
 set(CMAKE_SHARED_LIBRARY_PREFIX "")
+link_libraries(stdc++fs)
 
 message(STATUS "Building and finding all third party libraries")
 set(BOOST_ROOT ${CMAKE_CURRENT_SOURCE_DIR}/3rdparty/boost_1_73_0)

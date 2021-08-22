@@ -75,7 +75,7 @@ double RectangleElement::findDistance(double firstCoord, double secondCoord) {
     return secondCoord - firstCoord;
 }
 
-EdgeResults RectangleElement::findEdgePos(const std::vector<double> &coords, SelectType select) {
+EdgeResults RectangleElement::findEdgePos(const std::vector<double> &coords, SelectType select) const {
     // No edges detected
     if (coords.empty())
         return EdgeResults{};

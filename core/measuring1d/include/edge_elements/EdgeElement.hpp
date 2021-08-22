@@ -57,7 +57,7 @@ public:
  * @param select Whether to return all points or just the first or last point.
  * @return A structure representing the edgePositions of the points and the distance between each pair of consecutive points.
  */
-    virtual EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) = 0;
+    virtual EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) const = 0;
 
     /**
      * @fn cv::Mat projectOnToProfileLine(const cv::Mat &img, const MeasureHandle &measureHandle)
