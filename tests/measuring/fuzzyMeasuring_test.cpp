@@ -1,8 +1,8 @@
-#include "fuzzyMeasuring.hpp"
+#include "FuzzyMeasuring.hpp"
 
 #include "drawFuzzy.hpp"
 #include "drawHandles.hpp"
-#include "mcout.hpp"
+#include "MCout.hpp"
 
 using namespace std;
 using namespace cv;
@@ -19,8 +19,8 @@ int main(int argc, char *argv[]) {
     std::vector<double> xVals({20, 50, 80});
     std::vector<double> yVals({0, 1, 0});
 
-    FuzzyFunc func(xVals, yVals);
-    MeasureRectangle mHandle(250, 5, 10, 256, 0, true);  // fuzzy_tester.png
+    FuzzyFunction func(xVals, yVals);
+    RectangleElement mHandle(250, 5, 10, 256, 0, true);  // fuzzy_tester.png
                                                          //    MeasureArc mHandle(200, 150, 271, 271); // fuzzy_arc_test.png
 
     mHandle.setFuzzyFunc(func, FuzzyType::SIZE);

@@ -14,11 +14,10 @@ protected:
 
     double phi;  // Angle of the orientation of the rectangle
 
-
-
-    double findDistance(double firstCoord, double secondCoord) override;
-
 public:
+
+    double findDistance(double firstCoord, double secondCoord) const override;
+
     EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) const override;
 
     /**

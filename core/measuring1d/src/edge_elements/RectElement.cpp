@@ -71,7 +71,7 @@ bool compareRow(const Point2d &a, const Point2d &b) { return a.x < b.x; }
 
 bool compareCol(const Point2d &a, const Point2d &b) { return a.y < b.y; }
 
-double RectangleElement::findDistance(double firstCoord, double secondCoord) {
+double RectangleElement::findDistance(double firstCoord, double secondCoord) const {
     return secondCoord - firstCoord;
 }
 

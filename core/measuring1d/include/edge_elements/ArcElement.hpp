@@ -29,10 +29,10 @@ protected:
     double angleStart;  // Starting angle of the arc
     double angleExtent;  // Angular extent of the arc
 
-
-    double findDistance(double firstCoord, double secondCoord) override;
-
 public:
+    double findDistance(double firstCoord, double secondCoord) const override;
+
+
     EdgeResults findEdgePos(const std::vector<double> &coords, SelectType select = SelectType::ALL) const override;
 
 

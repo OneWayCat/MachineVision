@@ -21,7 +21,7 @@ bool insideArc(int innerRadius, int radius, double angleStart, double angleEnd, 
            between(angleStart, angleEnd, angleP2Pi);
 }
 
-double ArcElement::findDistance(double firstCoord, double secondCoord) {
+double ArcElement::findDistance(double firstCoord, double secondCoord) const {
     double angleStep = angleExtent / (binCounts.size() - 1);
     double middleRadius = ((double) innerRadius + radius) / 2.0;
 

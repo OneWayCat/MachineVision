@@ -144,7 +144,7 @@ fuzzyMeasurePairs(const cv::Mat &img, const T &measureHandle, double sigma, doub
 
     validateArgs(img, sigma, ampThresh);
 
-    cv::Mat profile = measureProjection(img, measureHandle);
+    cv::Mat profile = measureHandle.projectOnToProfileLine(img);
 
     // We create a copy because we need the original profile to score the pairs for FuzzyType::GRAY
     cv::Mat profileCopy = profile.clone();
@@ -231,11 +231,11 @@ fuzzyMeasurePairs(const cv::Mat &img, const T &measureHandle, double sigma, doub
     }
 
     // Find row and column coordinates of first edges, second edges, and center points between each pair
-    auto firstPosDist = findEdgePos(measureHandle, finalFirstCoords);
-    auto &finalFirstPos = firstPosDist.pos;
+    auto firstPosDist = measureHandle.findEdgePos(finalFirstCoords);
+    auto &finalFirstPos = firstPosDist.edgePositions;
 
-    auto secondPosDist = findEdgePos(measureHandle, finalSecondCoords);
-    auto &finalSecondPos = secondPosDist.pos;
+    auto secondPosDist = measureHandle.findEdgePos(finalSecondCoords);
+    auto &finalSecondPos = secondPosDist.edgePositions;
 
     std::vector<cv::Point2d> finalCenterPos{};
 
@@ -247,12 +247,12 @@ fuzzyMeasurePairs(const cv::Mat &img, const T &measureHandle, double sigma, doub
     std::vector<double> interDist{};
 
     for (size_t i = 0; i < numValidPairs; i++)
-        intraDist.push_back(findDistance(measureHandle, finalFirstCoords[i], finalSecondCoords[i]));
+        intraDist.push_back(measureHandle.findDistance(finalFirstCoords[i], finalSecondCoords[i]));
 
     // Find inter distance between pairs
     if (numValidPairs >= 2)
         for (size_t i = 0; i < numValidPairs - 1; i++)
-            interDist.push_back(findDistance(measureHandle, finalSecondCoords[i], finalFirstCoords[i + 1]));
+            interDist.push_back(measureHandle.findDistance(finalSecondCoords[i], finalFirstCoords[i + 1]));
 
     return FuzzyMeasurePairsResult{finalFirstPos, finalFirstAmps,
                                    finalSecondPos, finalSecondAmps,

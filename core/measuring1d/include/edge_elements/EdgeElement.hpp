@@ -41,13 +41,10 @@ protected:
 
     EdgeElement(int row, int column);  // Constructor
 
-protected:
-
+public:
 
     // Find the distance between 2 edges in an edge element.
-    virtual double findDistance(double firstCoord, double secondCoord) = 0;
-
-public:
+    virtual double findDistance(double firstCoord, double secondCoord) const = 0;
 
     /**
  * @brief Find the row and column coordinates of the points specified by the coords vector inside the
